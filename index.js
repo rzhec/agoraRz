@@ -24,22 +24,22 @@ function randomInt(min, max) {
 socket.addEventListener('open', function (event) {
     channelName = channelRNG(8);
     uid = randomInt(1, 4294967295);
-    uid2 = randomInt(1, 4294967295);
+    // uid2 = randomInt(1, 4294967295);
 
     var sendMessage = {
         channelName: channelName,
         uid: uid,
-        uid2: uid2
+        // uid2: uid2
     };
     socket.send(JSON.stringify(sendMessage));
 
-    let pingpong = setInterval(() => {
-        // console.log('channelName', channelName);
-        socket.send(JSON.stringify(sendMessage));
-        }, 5000);
-    // socket.send('Hello Server!');
-    // console.log("walaoheheheheh")
-    console.log('pingpong')
+    // let pingpong = setInterval(() => {
+    //     // console.log('channelName', channelName);
+    //     socket.send(JSON.stringify(sendMessage));
+    //     }, 5000);
+    // // socket.send('Hello Server!');
+    // // console.log("walaoheheheheh")
+    // console.log('pingpong')
 });
 
 var initParams = {};
@@ -498,6 +498,18 @@ socket.addEventListener('message', function (event) {
             // var params = serializeformData();
             if (validator(params, fields)) {
                 join(rtc, params);
+                uid2 = randomInt(1, 4294967295);
+
+                var sendMessage = {
+                    channelName: channelName,
+                    uid2: uid2
+                };
+
+                socket.send(JSON.stringify(sendMessage));
+
+                let pingpong = setInterval(() => {
+                    socket.send(JSON.stringify(sendMessage))
+                }, 5000);
             }
         })
 

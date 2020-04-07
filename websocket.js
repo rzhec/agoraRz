@@ -2,8 +2,6 @@ const WebSocket = require('ws');
 const {RtcTokenBuilder, RtmTokenBuilder, RtcRole, RtmRole} = require('agora-access-token');
 
 var channelName = '';
-var uid = 0;
-var uid2 = 0;
 
 // Rtc Examples
 const appID = '180b9e92a7b14eadbbcc7b25d1cbe08c';
@@ -37,28 +35,39 @@ wss.on('connection', function connection(ws) {
     clients.push(ws);
     ws.on('message', function incoming(message) {
         console.log('received: %s', message);
+        var uid = 0;
+        var uid2 = 0;
         if(message){
             // console.log('message == true', typeof(message))
             message = JSON.parse(message);
             channelName = message.channelName;
             uid = message.uid;
-            uid2 = message.uid2;
-            console.log('final checking', channelName, uid, uid2);
             var tokenA = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs);
             console.log("Token With Integer Number Uid: " + tokenA);
 
-            var tokenB = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid2, role, privilegeExpiredTs);
-            console.log("Token With Integer Number Uid 2222: " + tokenA);
+            if(message.uid2){
+                uid2 = message.uid2;
+                console.log('final checking', channelName, uid, uid2);
+                var tokenB = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid2, role, privilegeExpiredTs);
+                console.log("Token With Integer Number Uid 2222: " + tokenA);
+            }
         }
 
         let rtcParam = {
             appID: appID,
             channel: channelName,
-            tokenA: tokenA,
-            tokenB: tokenB,
-            uid: uid,
-            uid2: uid2
         };
+
+        if(uid && tokenA){
+            rtcParam.tokenA = tokenA;
+            rtcParam.uid = uid;
+        }
+
+        if(uid2 && tokenB){
+            rtcParam.tokenB = tokenB;
+            rtcParam.uid2 = uid2;
+        }
+
         console.log('rtcParam',rtcParam);
 
         clients.forEach(function (client) {
