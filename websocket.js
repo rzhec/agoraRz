@@ -33,6 +33,7 @@ let clients = [];
 
 wss.on('connection', function connection(ws) {
     clients.push(ws);
+    console.log('wws.on connect');
     ws.on('message', function incoming(message) {
         console.log('received: %s', message);
         let uid;

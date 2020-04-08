@@ -1,5 +1,5 @@
 // Create WebSocket connection.
-const socket = new WebSocket('wss://localhost:8080');
+const socket = new WebSocket('wss://demowss.zhubb.top:443');
 // const socket = new WebSocket('ws://192.168.1.100:8080');
 console.log('Connection Open');
 // Connection opened
