@@ -1,6 +1,6 @@
 // Create WebSocket connection.
 
-const socket = new WebSocket('wss://zhubb.top:8080');
+const socket = new WebSocket('wss://localhost:8080');
 // const socket = new WebSocket('ws://192.168.1.100:8080');
 console.log('receiver is here');
 // Connection opened`
