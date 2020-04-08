@@ -1,6 +1,9 @@
+import constServerName from './constServerName';
+
 // Create WebSocket connection.
-const socket = new WebSocket('ws://localhost:8080');
+// const socket = new WebSocket('ws://localhost:8080');
 // const socket = new WebSocket('ws://192.168.1.100:8080');
+const socket = new WebSocket('ws://' + constServerName.DOMAIN + ':8080');
 console.log('Connection Open');
 // Connection opened
 var channelName = '';
