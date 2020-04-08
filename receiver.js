@@ -1,8 +1,6 @@
 // Create WebSocket connection.
-import constServerName from "./constServerName";
 
-// const socket = new WebSocket('ws://localhost:8080');
-const socket = new WebSocket('ws://' + constServerName.DOMAIN + ':8080');
+const socket = new WebSocket('ws://zhubb.top:8080');
 // const socket = new WebSocket('ws://192.168.1.100:8080');
 console.log('receiver is here');
 // Connection opened`
@@ -38,9 +36,10 @@ socket.addEventListener('message', function (event) {
                 token: message.tokenB,
                 mode: 'live',
                 codec: 'h264',
-                uid: message.uid2
+                uid: message.uid2,
+                video: message.video
             };
-            join(rtc, initParams)
+            join(rtc, initParams);
             console.log('Receiver join');
         }
     }
@@ -325,11 +324,11 @@ socket.addEventListener('message', function (event) {
                 rtc.localStream = AgoraRTC.createStream({
                     streamID: rtc.params.uid,
                     audio: true,
-                    video: true,
+                    video: option.video,
                     screen: false,
                     microphoneId: option.microphoneId,
                     cameraId: option.cameraId
-                })
+                });
 
                 // init local stream
                 rtc.localStream.init(function () {

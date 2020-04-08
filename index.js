@@ -1,9 +1,6 @@
-import constServerName from './constServerName';
-
 // Create WebSocket connection.
-// const socket = new WebSocket('ws://localhost:8080');
+const socket = new WebSocket('ws://zhubb.top:8080');
 // const socket = new WebSocket('ws://192.168.1.100:8080');
-const socket = new WebSocket('ws://' + constServerName.DOMAIN + ':8080');
 console.log('Connection Open');
 // Connection opened
 var channelName = '';
@@ -360,7 +357,7 @@ socket.addEventListener('message', function (event) {
                 rtc.localStream = AgoraRTC.createStream({
                     streamID: rtc.params.uid,
                     audio: true,
-                    video: true,
+                    video: option.video,
                     screen: false,
                     microphoneId: option.microphoneId,
                     cameraId: option.cameraId
@@ -498,6 +495,7 @@ socket.addEventListener('message', function (event) {
         $("#join").on("click", function (e) {
             console.log("join", e);
             e.preventDefault();
+            params.video = true;
             // var params = serializeformData();
             if (validator(params, fields)) {
                 join(rtc, params);
@@ -505,7 +503,8 @@ socket.addEventListener('message', function (event) {
 
                 var sendMessage = {
                     channelName: channelName,
-                    uid2: uid2
+                    uid2: uid2,
+                    video: true
                 };
 
                 socket.send(JSON.stringify(sendMessage));
@@ -519,9 +518,23 @@ socket.addEventListener('message', function (event) {
         $("#publish").on("click", function (e) {
             console.log("publish")
             e.preventDefault();
+            params.video = false;
             // var params = serializeformData();
             if (validator(params, fields)) {
-                publish(rtc);
+                join(rtc, params);
+                uid2 = randomInt(1, 4294967295);
+
+                var sendMessage = {
+                    channelName: channelName,
+                    uid2: uid2,
+                    video: false
+                };
+
+                socket.send(JSON.stringify(sendMessage));
+
+                let pingpong = setInterval(() => {
+                    socket.send(JSON.stringify(sendMessage))
+                }, 5000);
             }
         });
 

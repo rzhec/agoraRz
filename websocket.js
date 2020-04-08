@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 const {RtcTokenBuilder, RtmTokenBuilder, RtcRole, RtmRole} = require('agora-access-token');
-
+console.log('Websocket Start');
 var channelName = '';
 
 // Rtc Examples
@@ -35,20 +35,22 @@ wss.on('connection', function connection(ws) {
     clients.push(ws);
     ws.on('message', function incoming(message) {
         console.log('received: %s', message);
-        var uid = 0;
-        var uid2 = 0;
+        let uid;
+        let uid2;
+        let tokenA;
+        let tokenB;
         if(message){
             // console.log('message == true', typeof(message))
             message = JSON.parse(message);
             channelName = message.channelName;
             uid = message.uid;
-            var tokenA = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs);
+            tokenA = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs);
             console.log("Token With Integer Number Uid: " + tokenA);
 
             if(message.uid2){
                 uid2 = message.uid2;
                 console.log('final checking', channelName, uid, uid2);
-                var tokenB = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid2, role, privilegeExpiredTs);
+                tokenB = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid2, role, privilegeExpiredTs);
                 console.log("Token With Integer Number Uid 2222: " + tokenA);
             }
         }
@@ -56,6 +58,7 @@ wss.on('connection', function connection(ws) {
         let rtcParam = {
             appID: appID,
             channel: channelName,
+            video: message.video
         };
 
         if(uid && tokenA){
