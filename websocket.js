@@ -39,44 +39,52 @@ wss.on('connection', function connection(ws) {
         let uid2;
         let tokenA;
         let tokenB;
-        if(message){
+        if(message) {
             // console.log('message == true', typeof(message))
             message = JSON.parse(message);
-            channelName = message.channelName;
-            uid = message.uid;
-            tokenA = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs);
-            console.log("Token With Integer Number Uid: " + tokenA);
 
-            if(message.uid2){
-                uid2 = message.uid2;
-                console.log('final checking', channelName, uid, uid2);
-                tokenB = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid2, role, privilegeExpiredTs);
-                console.log("Token With Integer Number Uid 2222: " + tokenA);
+            if (message.type === 'initialize' || message.type === 'send') {
+                channelName = message.channelName;
+                if (message.uid) {
+                    uid = message.uid;
+                    tokenA = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs);
+                    console.log("Token With Integer Number Uid: " + tokenA);
+                }
+
+                if (message.uid2) {
+                    uid2 = message.uid2;
+                    tokenB = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid2, role, privilegeExpiredTs);
+                    // console.log("Token With Integer Number Uid 2222: " + tokenB;
+                }
+
+                let rtcParam = {
+                    appID: appID,
+                    channel: channelName,
+                    video: message.video,
+                };
+
+                if (uid && tokenA) {
+                    rtcParam.tokenA = tokenA;
+                    rtcParam.uid = uid;
+                }
+
+                if (uid2 && tokenB) {
+                    rtcParam.tokenB = tokenB;
+                    rtcParam.uid2 = uid2;
+                }
+                console.log('rtcParam', rtcParam);
+
+                clients.forEach(function (client) {
+                    // client.send(message);
+                    client.send(JSON.stringify(rtcParam));
+                });
+            } else if (message.type === 'received' || message.type === 'reject'){
+                clients.forEach(function (client) {
+                    // client.send(message);
+                    client.send(JSON.stringify({type: message.type}));
+                });
             }
         }
-
-        let rtcParam = {
-            appID: appID,
-            channel: channelName,
-            video: message.video
-        };
-
-        if(uid && tokenA){
-            rtcParam.tokenA = tokenA;
-            rtcParam.uid = uid;
-        }
-
-        if(uid2 && tokenB){
-            rtcParam.tokenB = tokenB;
-            rtcParam.uid2 = uid2;
-        }
-
-        console.log('rtcParam',rtcParam);
-
-        clients.forEach(function (client) {
-            // client.send(message);
-            client.send(JSON.stringify(rtcParam));
-        });
     });
 
     // ws.send('something');
