@@ -28,7 +28,7 @@ socket.addEventListener('open', function (event) {
     uid = randomInt(1, 4294967295);
     // uid2 = randomInt(1, 4294967295);
 
-    var sendMessage = {
+    let sendMessage = {
         channelName: channelName,
         uid: uid,
         type: 'initialize'
@@ -532,7 +532,7 @@ $(function () {
             join(rtc, params);
             uid2 = randomInt(1, 4294967295);
 
-            var sendMessage = {
+            let sendMessage = {
                 channelName: channelName,
                 uid2: uid2,
                 video: true,
@@ -557,7 +557,7 @@ $(function () {
             join(rtc, params);
             uid2 = randomInt(1, 4294967295);
 
-            var sendMessage = {
+            let sendMessage = {
                 channelName: channelName,
                 uid2: uid2,
                 video: false,
