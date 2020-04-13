@@ -72,10 +72,17 @@ socket.addEventListener('message', function (event) {
                 uid: uid
             };
 
-            if (tokenA) {
-                initParams.token = tokenA;
-            } else if (message.tokenA) {
+            // if (tokenA) {
+            //     initParams.token = tokenA;
+            // } else if (message.tokenA) {
+            //     tokenA = message.tokenA;
+            //     initParams.token = tokenA;
+            // }
+
+            if(message.tokenA) {
                 tokenA = message.tokenA;
+                initParams.token = tokenA;
+            } else if (tokenA) {
                 initParams.token = tokenA;
             }
 
