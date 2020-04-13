@@ -13,9 +13,9 @@ const role = RtcRole.PUBLISHER;
 
 const expirationTimeInSeconds = 3600
 
-const currentTimestamp = Math.floor(Date.now() / 1000)
-
-const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds
+// var currentTimestamp = Math.floor(Date.now() / 1000)
+//
+// var privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds
 
 // IMPORTANT! Build token with either the uid or with the user account. Comment out the option you do not want to use below.
 
@@ -39,6 +39,8 @@ wss.on('connection', function connection(ws) {
         let uid2;
         let tokenA;
         let tokenB;
+        let currentTimestamp = Math.floor(Date.now() / 1000);
+        let privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
         if(message) {
             // console.log('message == true', typeof(message))
             message = JSON.parse(message);
