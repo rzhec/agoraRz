@@ -4,8 +4,13 @@ console.log('Websocket Start');
 var channelName = '';
 
 // Rtc Examples
-const appID = '180b9e92a7b14eadbbcc7b25d1cbe08c';
-const appCertificate = '597c2fa5e5634411884258bc11a2b21f';
+// const appID = '180b9e92a7b14eadbbcc7b25d1cbe08c';
+// const appCertificate = '597c2fa5e5634411884258bc11a2b21f';
+
+//SnSoft prefix
+const appID = 'da73e8bef5aa4397b752e18da77b306e';
+const appCertificate = '43a591d22caf4649b65ac91a2793e284';
+
 // const channelName = 'demooooooooo';
 // const uid = randomInt(1, 4294967295);
 // const uid2 = randomInt(1, 4294967295);
